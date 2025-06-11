@@ -6,7 +6,7 @@
 /*   By: skuhlcke <skuhlcke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 17:39:58 by skuhlcke          #+#    #+#             */
-/*   Updated: 2025/06/11 15:20:46 by skuhlcke         ###   ########.fr       */
+/*   Updated: 2025/06/11 16:03:38 by skuhlcke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	init_proj(t_proj *P, t_map_list *map)
 	P->map_h = map->height;
 	P->win_w = 1000;
 	P->win_h = 800;
-	P->zoom = 20.0f;
+	P->zoom = 30.0f;
 	P->cos30 = 0.8660254f;
 	P->sin30 = 0.5f;
 }
