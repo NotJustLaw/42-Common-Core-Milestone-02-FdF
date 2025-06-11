@@ -6,7 +6,7 @@
 /*   By: skuhlcke <skuhlcke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:00:05 by skuhlcke          #+#    #+#             */
-/*   Updated: 2025/06/05 18:02:12 by skuhlcke         ###   ########.fr       */
+/*   Updated: 2025/06/09 17:56:30 by skuhlcke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	fd_in_handler(char	*filename)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 	{
-		perror("Error opening .fdf file");
+		perror("Error");
 		return (-1);
 	}
 	return (fd);
