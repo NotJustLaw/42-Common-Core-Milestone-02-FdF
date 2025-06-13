@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fds_utils.c                                        :+:      :+:    :+:   */
+/*   fdf_compat.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: skuhlcke <skuhlcke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/05 18:00:05 by skuhlcke          #+#    #+#             */
-/*   Updated: 2025/06/13 16:29:04 by skuhlcke         ###   ########.fr       */
+/*   Created: 2025/06/13 15:04:07 by skuhlcke          #+#    #+#             */
+/*   Updated: 2025/06/13 16:24:27 by skuhlcke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#ifndef FDF_COMPAT_H
+# define FDF_COMPAT_H
 
-int	fd_in_handler(char	*filename)
+# ifdef __linux__
+	#  include <mlx.h>
+
+static inline void	destroy_display(void *mlx)
 {
-	int	fd;
-
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-	{
-		perror("Open Infile Error");
-		return (-1);
-	}
-	return (fd);
+	mlx_destroy_display(mlx);
 }
+
+# else
+
+static inline void	destroy_display(void *mlx)
+{
+	(void)mlx;
+}
+
+# endif
+
+#endif

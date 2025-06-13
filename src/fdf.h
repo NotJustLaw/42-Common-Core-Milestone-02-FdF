@@ -6,7 +6,7 @@
 /*   By: skuhlcke <skuhlcke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 17:33:06 by skuhlcke          #+#    #+#             */
-/*   Updated: 2025/06/11 15:00:37 by skuhlcke         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:49:11 by skuhlcke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../libft/libft.h"
 # include "../gnl/get_next_line_bonus.h"
 # include "../minilibx-linux/mlx.h"
+# include "fdf_compat.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
@@ -69,6 +70,19 @@ typedef struct s_vars
 	t_map_list	*map;
 }		t_vars;
 
+typedef struct s_bres
+{
+	t_point2 		p0;
+	t_point2		p1;
+	int				dx;
+	int				dy;
+	int				sx;
+	int				sy;
+	int				err;
+	t_img			*img;
+	const t_proj	*P;
+}		t_bres;
+
 //Map-Wise
 int		xy_alloc(char *filename, t_map_list *map);
 int		map_grid_alloc(t_map_list *map);
@@ -96,6 +110,7 @@ void	free_split(char **arr);
 void	free_int_arr(int **arr, int rows_allocated);
 int		handle_key(int keycode, void *param);
 int		handle_close(void *param);
+void	cleanup(t_vars *vars);
 
 //Project handler
 void	init_proj(t_proj *P, t_map_list *map);

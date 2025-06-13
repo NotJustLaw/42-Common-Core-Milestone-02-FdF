@@ -6,64 +6,43 @@
 /*   By: skuhlcke <skuhlcke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 18:28:07 by skuhlcke          #+#    #+#             */
-/*   Updated: 2025/06/11 16:25:50 by skuhlcke         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:25:51 by skuhlcke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void
-draw_connections(const t_proj *P, const t_map_list *map,
-	t_img *img, int r, int c, t_point2 p0)
+static void	draw_right(const t_proj *P, t_img *img, t_point2 p0, t_point3 n)
 {
-	if (c + 1 < map->width)
-	{
-		t_point2 p1 = project_iso(P,
-			(t_point3){c + 1, r, map->grid[r][c + 1]});
-		// if (p1.x < 0 || p1.y < 0
-		//  || p1.x >= P->win_w || p1.y >= P->win_h)
-		// {
-		// 	printf("Out‐of‐bounds neighbor at row %d col %d → (%d,%d)\n",
-		// 		r, c + 1, p1.x, p1.y);
-		// 	exit(1);
-		// }
-		draw_line(p0, p1, img, P);
-	}
-	if (r + 1 < map->height)
-	{
-		t_point2 p1 = project_iso(P,
-			(t_point3){c, r + 1, map->grid[r + 1][c]});
-		// if (p1.x < 0 || p1.y < 0
-		//  || p1.x >= P->win_w || p1.y >= P->win_h)
-		// {
-		// 	printf("Out‐of‐bounds neighbor at row %d col %d → (%d,%d)\n",
-		// 		r + 1, c, p1.x, p1.y);
-		// 	exit(1);
-		// }
-		draw_line(p0, p1, img, P);
-	}
+	t_point2	p1;
+
+	p1 = project_iso(P, n);
+	draw_line(p0, p1, img, P);
 }
 
-void
-draw_row(const t_proj *P, const t_map_list *map,
-	t_img *img, int r)
+static void	draw_down(const t_proj *P, t_img *img, t_point2 p0, t_point3 n)
 {
-	int		c;
+	t_point2	p1;
+
+	p1 = project_iso(P, n);
+	draw_line(p0, p1, img, P);
+}
+
+void	draw_row(const t_proj *P, const t_map_list *map, t_img *img, int r)
+{
+	int			c;
 	t_point2	p0;
 
 	c = 0;
 	while (c < map->width)
 	{
-		p0 = project_iso(P,
-			(t_point3){c, r, map->grid[r][c]});
-		// if (p0.x < 0 || p0.y < 0
-		//  || p0.x >= P->win_w || p0.y >= P->win_h)
-		// {
-		// 	printf("Out‐of‐bounds at row %d col %d → (%d,%d)\n",
-		// 		r, c, p0.x, p0.y);
-		// 	exit(1);
-		// }
-		draw_connections(P, map, img, r, c, p0);
+		p0 = project_iso(P, (t_point3){c, r, map->grid[r][c]});
+		if (c + 1 < map->width)
+			draw_right(P, img, p0,
+				(t_point3){c + 1, r, map->grid[r][c + 1]});
+		if (r + 1 < map->height)
+			draw_down(P, img, p0,
+				(t_point3){c, r + 1, map->grid[r + 1][c]});
 		c++;
 	}
 }

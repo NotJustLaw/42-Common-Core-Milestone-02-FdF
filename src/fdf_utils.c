@@ -6,7 +6,7 @@
 /*   By: skuhlcke <skuhlcke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 13:34:53 by skuhlcke          #+#    #+#             */
-/*   Updated: 2025/06/11 15:50:01 by skuhlcke         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:49:15 by skuhlcke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,8 @@ int	handle_key(int keycode, void *param)
 	v = (t_vars *)param;
 	if (keycode == 65307)
 	{
-		free_int_arr(v->map->grid, v->map->height);
 		ft_putstr_fd("Please wait until the window is closed properly\n", 1);
-		mlx_destroy_image(v->mlx, v->img.ptr);
-		mlx_destroy_window(v->mlx, v->win);
+		cleanup(v);
 		exit(0);
 	}
 	return (0);
@@ -53,10 +51,8 @@ int	handle_close(void *param)
 	t_vars	*v;
 
 	v = (t_vars *)param;
-	free_int_arr(v->map->grid, v->map->height);
 	ft_putstr_fd("Please wait until the window is closed properly\n", 1);
-	mlx_destroy_image(v->mlx, v->img.ptr);
-	mlx_destroy_window(v->mlx, v->win);
+	cleanup(v);
 	exit(0);
 	return (0);
 }

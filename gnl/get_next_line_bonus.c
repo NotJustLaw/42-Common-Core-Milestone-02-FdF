@@ -6,7 +6,7 @@
 /*   By: skuhlcke <skuhlcke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 21:59:56 by justlaw           #+#    #+#             */
-/*   Updated: 2025/06/03 18:15:26 by skuhlcke         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:01:24 by skuhlcke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,18 @@
 
 char	*ft_next(char *s);
 char	*ft_line(char *s);
+
+static void	cleanup_stash(char **stash)
+{
+	int	i;
+
+	i = 0;
+	while (i < FD_MAX)
+	{
+		free(stash[i]);
+		stash[i++] = NULL;
+	}
+}
 
 char	*get_next_line(int fd)
 {
@@ -23,7 +35,7 @@ char	*get_next_line(int fd)
 	int			r;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= FD_MAX)
-		return (NULL);
+		return (cleanup_stash(stash), NULL);
 	buf = malloc((size_t)BUFFER_SIZE + 1);
 	if (!buf)
 		return (NULL);

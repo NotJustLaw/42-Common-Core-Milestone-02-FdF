@@ -6,7 +6,7 @@
 /*   By: skuhlcke <skuhlcke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:53:22 by skuhlcke          #+#    #+#             */
-/*   Updated: 2025/06/11 15:21:14 by skuhlcke         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:22:35 by skuhlcke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,65 +45,52 @@ t_point2	project_iso(const t_proj *P, t_point3 in)
 	return (out);
 }
 
-// static void bres_step_x(int *err, int dy, int *px, int sx)
-// {
-// 	if ((*err * 2) > -dy)
-// 	{
-// 		*err = *err - dy;
-// 		*px += sx;
-// 	}
-// }
+static void	init_bres(t_bres *b, t_point2 p0, t_point2 p1)
+{
+	b->p0 = p0;
+	b->p1 = p1;
+	b->dx = abs(p1.x - p0.x);
+	b->dy = abs(p1.y - p0.y);
+	b->sx = (p0.x < p1.x) ? 1 : -1;
+	b->sy = (p0.y < p1.y) ? 1 : -1;
+	b->err = b->dx - b->dy;
+}
 
-// static void bres_step_y(int *err, int dx, int *py, int sy)
-// {
-// 	if ((*err * 2) < dx)
-// 	{
-// 		*err = *err + dx;
-// 		*py += sy;
-// 	}
-// }
-/// @brief Bresenham’s line-drawing algorithm
+static void	plot_bres_pixel(t_bres *b)
+{
+	size_t	offset;
+	int		px_size;
+
+	px_size = b->img->bpp / 8;
+	offset = (size_t)b->p0.y * b->img->line_len
+	       + (size_t)b->p0.x * px_size;
+	*(unsigned int *)(b->img->dat + offset) = 0xFFFFFF;
+}
+
 void	draw_line(t_point2 p0, t_point2 p1, t_img *img, const t_proj *P)
 {
-	int 	dx;
-	int 	dy;
-	int 	sx;
-	int 	sy;
-	int 	err;
-	size_t	offset;
+	t_bres	b;
+	int		e2;
 
-	dx = abs(p1.x - p0.x);
-	dy = abs(p1.y - p0.y);
-	if (p0.x < p1.x)
-		sx = 1;
-	else
-		sx = -1;
-	if (p0.y < p1.y)
-		sy = 1;
-	else
-		sy = -1;
-	err = dx - dy;
+	b.img = img;
+	b.P = P;
+	init_bres(&b, p0, p1);
 	while (1)
 	{
-		if (in_bounds(P, p0))
-		{
-			int   px_size = img->bpp / 8;  
-			offset = (size_t)p0.y * img->line_len
-					+ (size_t)p0.x * px_size;
-			*(unsigned int*)(img->dat + offset) = 0xFFFFFF;
-		}
-		if (p0.x == p1.x && p0.y == p1.y)
+		if (in_bounds(P, b.p0))
+			plot_bres_pixel(&b);
+		if (b.p0.x == b.p1.x && b.p0.y == b.p1.y)
 			break ;
-		int e2 = err * 2;
-		if (e2 > -dy)
+		e2 = b.err * 2;
+		if (e2 > -b.dy)
 		{
-			err -= dy;
-			p0.x += sx;
+			b.err -= b.dy;
+			b.p0.x += b.sx;
 		}
-		if (e2 < dx)
+		if (e2 < b.dx)
 		{
-			err += dx;
-			p0.y += sy;
+			b.err += b.dx;
+			b.p0.y += b.sy;
 		}
 	}
 }
