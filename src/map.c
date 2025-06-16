@@ -6,7 +6,7 @@
 /*   By: skuhlcke <skuhlcke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 17:39:25 by skuhlcke          #+#    #+#             */
-/*   Updated: 2025/06/13 16:48:16 by skuhlcke         ###   ########.fr       */
+/*   Updated: 2025/06/16 14:21:41 by skuhlcke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	xy_alloc(char *filename, t_map_list *map)
 	char	*line;
 	int		fd;
 	char	**tokens;
-	
+
 	fd = fd_in_handler(filename);
 	if (fd < 0)
 		return (-1);
@@ -31,7 +31,7 @@ int	xy_alloc(char *filename, t_map_list *map)
 	map->width = count_tokens(tokens);
 	free_split(tokens);
 	map->height = 0;
-	while(line)
+	while (line)
 	{
 		map->height += 1;
 		free(line);
@@ -44,10 +44,10 @@ int	xy_alloc(char *filename, t_map_list *map)
 int	map_grid_alloc(t_map_list *map)
 {
 	int	row;
-	
+
 	map->grid = (int **) malloc(sizeof(int *) * map->height);
 	if (!map->grid)
-		return (ft_putstr_fd("The map grid allocator suffered an error\n", 2), -1);
+		return (ft_putstr_fd("Map grid error\n", 2), -1);
 	row = 0;
 	while (row < map->height)
 	{
@@ -55,7 +55,7 @@ int	map_grid_alloc(t_map_list *map)
 		if (!map->grid[row])
 		{
 			free_int_arr(map->grid, row);
-			return (ft_putstr_fd("The map row allocator suffered an error\n", 2), -1);
+			return (ft_putstr_fd("Row allocator error\n", 2), -1);
 		}
 		row++;
 	}
@@ -74,4 +74,3 @@ int	grid_map_filler(char *filename, t_map_list *map)
 	close(fd);
 	return (0);
 }
-

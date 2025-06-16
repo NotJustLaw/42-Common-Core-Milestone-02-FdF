@@ -6,15 +6,16 @@
 /*   By: skuhlcke <skuhlcke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:04:07 by skuhlcke          #+#    #+#             */
-/*   Updated: 2025/06/13 16:24:27 by skuhlcke         ###   ########.fr       */
+/*   Updated: 2025/06/16 14:29:39 by skuhlcke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_COMPAT_H
 # define FDF_COMPAT_H
 
+# include <mlx.h>
+
 # ifdef __linux__
-	#  include <mlx.h>
 
 static inline void	destroy_display(void *mlx)
 {
